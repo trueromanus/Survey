@@ -18,13 +18,11 @@ namespace Survey.Controllers
 
 		public AnswerController ( ISurveyRepository<Answer> repository ) => _repository = repository;
 
-		private object GetJsonValue ( JsonElement jsonElement ) {
-			return jsonElement.GetString ();
-		}
-
 		[HttpPost]
 		[Route ( "save" )]
 		public bool SaveAnswers ( [FromBody] IEnumerable<AnswerModel> answers ) {
+			if ( !ModelState.IsValid ) return false;
+
 			var questionary = new Questionary {
 				Created = DateTime.UtcNow
 			};
@@ -37,7 +35,7 @@ namespace Survey.Controllers
 						BoolValue = a.ValueType == SurveyValueType.Bool ? ( (JsonElement) a.Value ).GetBoolean () : (bool?) null ,
 						DateValue = a.ValueType == SurveyValueType.Date ? ( (JsonElement) a.Value ).GetDateTime () : (DateTime?) null ,
 						IntegerValue = a.ValueType == SurveyValueType.Integer || a.ValueType == SurveyValueType.Enum ? ( (JsonElement) a.Value ).GetInt32() : (int?) null ,
-						StringValue = a.ValueType == SurveyValueType.String ? ( (JsonElement) a.Value ).GetString() : (string) null ,
+						StringValue = a.ValueType == SurveyValueType.String ? ( (JsonElement) a.Value ).GetString() : null ,
 						AnswerQuestions = new List<AnswerQuestion> {
 							new AnswerQuestion {
 								QuestionId = a.QuestionId

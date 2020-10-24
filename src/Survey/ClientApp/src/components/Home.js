@@ -15,8 +15,11 @@ export class Home extends Component {
 
     render () {
         return (
-            <div className="start-container">
-                <button type="button" className="btn btn-primary" onClick={this.startSurvey}>Начать</button>
+            <div className="full-container">
+                <span>Ответьте на ряд вопрос</span>
+                <div className="start-container">
+                    <button type="button" className="btn btn-primary" onClick={this.startSurvey}>Начать</button>
+                </div>
             </div>
         );
     }

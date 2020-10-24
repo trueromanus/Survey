@@ -5,8 +5,8 @@ namespace Survey.Model
 {
 	public class SurveyContext : DbContext
 	{
-
-		protected override void OnConfiguring ( DbContextOptionsBuilder options ) => options.UseSqlServer ( $"Data Source=NCOMP;Initial Catalog=Survey;Integrated Security=true;" );
+		public SurveyContext ( DbContextOptions options ) : base ( options ) {
+		}
 
 		protected override void OnModelCreating ( ModelBuilder modelBuilder ) {
 			modelBuilder.Entity<AnswerQuestion> ()

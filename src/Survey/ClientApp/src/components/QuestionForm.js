@@ -45,6 +45,7 @@ export class QuestionForm extends Component {
 
         answer.valueType = question.valueType;
         answer.value = this.state.currentValue;
+        if (question.valueType === valueTypes.Bool && answer.value === ``) answer.value = false;
         answer.questionId = question.id;
 
         const index = this.state.currentQuestionIndex + 1;
@@ -108,7 +109,7 @@ export class QuestionForm extends Component {
                     const options = [{id: null, title: ``}].concat(question.questionOptions);
                     inputContent = (
                         <select className="form-control" value={this.state.currentValue + ``} onChange={this.handleNumber}>
-                            {options.map((a) => <option value={a.id}>{a.title}</option>)}
+                            {options.map((a) => <option value={a.id} key={a.id}>{a.title}</option>)}
                         </select>
                     );
                     break;
