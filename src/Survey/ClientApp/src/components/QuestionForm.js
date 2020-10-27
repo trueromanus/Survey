@@ -14,7 +14,6 @@ export class QuestionForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            forecasts: [],
             questions: [],
             currentQuestionIndex: 0,
             currentValue: ``,
@@ -91,7 +90,6 @@ export class QuestionForm extends Component {
     }
 
     renderQuestions(questions, currentQuestion) {
-        
         let inputContent;
         const question = questions[currentQuestion];
         if (question) {

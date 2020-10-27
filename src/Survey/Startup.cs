@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Survey.BL;
+using Survey.BL.Services;
 using Survey.Model;
 using Survey.Model.Entities;
 using Survey.Model.Repositories;
@@ -24,6 +26,8 @@ namespace Survey
 
 			services.AddTransient<ISurveyRepository<Question> , SurveyRepository<Question>> ();
 			services.AddTransient<ISurveyRepository<Answer> , SurveyRepository<Answer>> ();
+			services.AddTransient<IQuestionService , QuestionService> ();
+			services.AddTransient<IAnswerService , AnswerService> ();
 
 			services.AddControllersWithViews ();
 

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Survey.Common\Survey.Common.csproj" />
+    <ProjectReference Include="..\Survey.Model\Survey.Model.csproj" />
+  </ItemGroup>
+
+</Project>

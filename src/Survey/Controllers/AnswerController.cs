@@ -1,52 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Survey.Model.Entities;
-using Survey.Model.Repositories;
+using Survey.BL;
 using Survey.Models;
-using SurveyValueType = Survey.Model.Entities.ValueType;
 
 namespace Survey.Controllers
 {
+	
+	/// <summary>
+	/// Контроллер ответов.
+	/// </summary>
 	[Route ( "api/answers" )]
 	[ApiController]
 	public class AnswerController : ControllerBase
 	{
-		private readonly ISurveyRepository<Answer> _repository;
+		private readonly IAnswerService _answerService;
 
-		public AnswerController ( ISurveyRepository<Answer> repository ) => _repository = repository;
+		public AnswerController ( IAnswerService answerService ) => _answerService = answerService;
 
+		/// <summary>
+		/// Сохранить ответы.
+		/// </summary>
+		/// <param name="answers">Коллекция ответов.</param>
 		[HttpPost]
 		[Route ( "save" )]
-		public bool SaveAnswers ( [FromBody] IEnumerable<AnswerModel> answers ) {
+		public async Task<bool> SaveAnswers ( [FromBody] IEnumerable<AnswerModel> answers ) {
 			if ( !ModelState.IsValid ) return false;
 
-			var questionary = new Questionary {
-				Created = DateTime.UtcNow
-			};
-
-			_repository.AddRange (
-				answers.Select (
-					a => new Answer {
-						ValueType = a.ValueType ,
-						Questionary = questionary ,
-						BoolValue = a.ValueType == SurveyValueType.Bool ? ( (JsonElement) a.Value ).GetBoolean () : (bool?) null ,
-						DateValue = a.ValueType == SurveyValueType.Date ? ( (JsonElement) a.Value ).GetDateTime () : (DateTime?) null ,
-						IntegerValue = a.ValueType == SurveyValueType.Integer || a.ValueType == SurveyValueType.Enum ? ( (JsonElement) a.Value ).GetInt32() : (int?) null ,
-						StringValue = a.ValueType == SurveyValueType.String ? ( (JsonElement) a.Value ).GetString() : null ,
-						AnswerQuestions = new List<AnswerQuestion> {
-							new AnswerQuestion {
-								QuestionId = a.QuestionId
-							}
-						}
-					}
-				).ToList ()
-			);
-
 			try {
-				_repository.SaveAsync ();
+				await _answerService.SaveAnswersAsync ( answers );
 			} catch {
 				return false;
 			}
